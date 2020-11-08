@@ -15,7 +15,7 @@
     <!-- Css External -->
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}"/>
     <link rel="stylesheet" href="{{ asset('frontend/css/modal-video.min.css') }}"/>
-
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet" />
     <!-- Css Inline -->
     <style>
       code {
@@ -236,6 +236,7 @@
     <!-- Custom OWL Slider -->
     <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/js/owl.carousel.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js')}}"></script>
     <script>
       const prevIcon = "<img src='{{ asset('frontend/images/prev.svg') }}'>";
       const nextIcon = "<img src='{{ asset('frontend/images/next.svg') }}''>";
@@ -273,7 +274,12 @@
     <script src="{{ asset('frontend/js/jquery-modal-video.min.js') }}"></script>
     <script>
       $(".video-play").modalVideo();
-
+      @if(Session::has('success'))
+        toastr.success("{{ Session::get('success')}}")
+      @endif
+      @if(Session::has('info'))
+        toastr.info("{{ Session::get('info')}}")
+      @endif
     </script>
   </body>
 </html>

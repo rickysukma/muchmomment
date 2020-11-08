@@ -15,22 +15,37 @@
 
           <div class="form-group">
             <label for="exampleFormControltitle">Instagram Username</label>
-            <input name="ig" type="text" class="form-control" id="exampleFormControltitle" placeholder="ex : akundodolan_ tanpa tanda '@'" value="{{ $option['ig'] }}" required>
+            <input name="instagram" type="text" class="form-control" id="exampleFormControltitle" placeholder="ex : akundodolan_ tanpa tanda '@'" value="{{ $option->instagram }}" required>
           </div>
 
           <div class="form-group">
             <label for="exampleFormControltitle">Whatsapp Number</label>
-            <input name="wa" type="text" class="form-control" id="exampleFormControlYtId" placeholder="6289572342364 tanpa tanda '+'" value="{{ $option['wa'] }}" required>
+            <input name="whatsapp" type="text" class="form-control" id="exampleFormControlYtId" placeholder="6289572342364 tanpa tanda '+'" value="{{ $option->whatsapp }}" required>
           </div>
 
           <div class="form-group">
             <label for="exampleFormControltitle">Kontak Email</label>
-            <input name="email" type="email" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option['email'] }}" required>
+            <input name="email" type="email" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option->email }}" required>
           </div>
+          <br>
+          <div class="form-group" style="">
+            <label for="exampleFormControltitle">SMTP Email Setting [Gmail Only]</label>
+          </div>
+          <hr>
 
           <div class="form-group" style="display: none">
             <label for="exampleFormControltitle">Kontak Telepon</label>
-            <input name="telp" type="text" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option['telp'] }}" required>
+            <input name="telp" type="text" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option->telepon }}">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControltitle">Email Setting</label>
+            <input name="emailkontak" type="text" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option->emailkontak }}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControltitle">Password Email</label>
+            <input name="passwordemail" type="password" class="form-control" id="exampleFormControlYtId" placeholder="email@mail.com" value="{{ $option->passwordemail }}" required>
           </div>
 
           <button value="submit" class="btn btn-success">Save Setting</button>

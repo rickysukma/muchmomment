@@ -7,6 +7,7 @@ use App\Category;
 use App\Tag;
 use App\Video; 
 use App\Album; 
+use App\Option; 
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -372,36 +373,37 @@ class AdminController extends Controller
     }
 
     public function setting(){
-      $option = array(
-        'wa' => env('OPTION_WA'),
-        'ig' => env('OPTION_INSTAGRAM'),
-        'telp' => env('OPTION_TELP'),
-        'email' => env('OPTION_EMAIL'),
-    );
+    //   $option = array(
+    //     'wa' => env('OPTION_WA'),
+    //     'ig' => env('OPTION_INSTAGRAM'),
+    //     'telp' => env('OPTION_TELP'),
+    //     'email' => env('OPTION_EMAIL'),
+    // );
+
+    $option = Option::findOrfail(1)->first();
+      // exit(print_r($option->email));
       return view('admin.setting')->with('option',$option);
     }
 
     public function setting_save(Request $request){
 
-      // $this->validate($request,[
-      //   'ig'=>'required',
-      //   'telp'=>'number',
-      //   'wa'=>'required|number',
-      //   'email'=>'required|email'
-      // ]);
+      $this->validate($request,[
+        'instagram'=>'required',
+        'whatsapp'=>'required',
+        'email'=>'required|email',
+        'emailkontak'=>'required|email',
+        'passwordemail'=>'required',
+      ]);
+      
+      $setting = Option::findOrFail(1);
+      $setting->instagram = $request->instagram;
+      $setting->whatsapp = $request->whatsapp;
+      $setting->email = $request->email;
+      $setting->emailkontak = $request->emailkontak;
+      $setting->passwordemail = $request->passwordemail;
+      $setting->save();
       // echo implode("=",json_decode(json_encode($request)));exit;
-      $data =[
-        'OPTION_WA' =>  $request->wa,
-        'OPTION_TELP' =>  $request->telp,
-        'OPTION_INSTAGRAM' =>  $request->ig,
-        'OPTION_EMAIL' =>  $request->email];
-
-      foreach($data as $i => $dat){
-        // var_dump(self::setEnv($i,$dat));
-        // echo $i.'='.$dat;
-      }
-      // \putenv($data);
-      // exit();
+      
 
       Session::flash('success','Setting has been updated!');
       return redirect()->route('admin.setting');

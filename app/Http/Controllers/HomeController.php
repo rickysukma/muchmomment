@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Session;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -47,7 +47,7 @@ class HomeController extends Controller
         }elseif(!empty($cat) && $slug == null){
             $photo = DB::table('photos')
                     ->join('categories','categories.id','=','photos.category')
-                    ->where('categories.name',ucfirst($cat))->paginate(2)->onEachSide(3);
+                    ->where('categories.name',ucfirst($cat))->paginate(3)->onEachSide(3);
         }
         return view('frontend.photo')->with('photos',$photo);
     }
@@ -58,7 +58,7 @@ class HomeController extends Controller
         }elseif(!empty($cat) && $slug == null){
             $videos = DB::table('videos')
                     ->join('categories','categories.id','=','videos.category')
-                    ->where('categories.name',ucfirst($cat))->paginate(2);
+                    ->where('categories.name',ucfirst($cat))->paginate(3)->onEachSide(3);
         }
         return view('frontend.video')->with('videos',$videos);
     }
@@ -81,7 +81,15 @@ class HomeController extends Controller
             'message' => 'required',
         ]);
         
-        self::mailersend($req);
+        $data = array(  'name' => $req->name,
+                        'email' => $req->email,
+                        'service' => $req->service,
+                        'typeservice' => $req->typeservice,
+                        'message' => $req->message);
+
+        self::mailersend($data);
+
+        return back();
 
     }
 
@@ -96,11 +104,19 @@ class HomeController extends Controller
             <td colspan=5><center>FORM PESAN MASUK</center></td>
         </td>
         <tr>
-            <td>Nama</td><td>:</td><td> ".$data->name."</td>
-            <td>Email</td><td>:</td><td> ".$data->email."</td>
-            <td>Service</td><td>:</td><td> ".$data->service."</td>
-            <td>Tipe Service</td><td>:</td><td> ".$data->typeservice."</td>
-            <td>Pesan</td><td>:</td><td> ".$data->message."</td>
+            <td>Nama</td><td>:</td><td> ".$data['name']."</td>
+        </tr>
+        <tr>
+            <td>Email</td><td>:</td><td> ".$data['email']."</td>
+        </tr>
+        <tr>
+            <td>Service</td><td>:</td><td> ".$data['service']."</td>
+        </tr>
+        <tr>
+            <td>Tipe Service</td><td>:</td><td> ".$data['typeservice']."</td>
+        </tr>
+        <tr>
+            <td>Pesan</td><td>:</td><td> ".$data['message']."</td>
         </tr>
         </table>";
 
@@ -108,26 +124,32 @@ class HomeController extends Controller
         // SMTP::DEBUG_OFF = off (for production use)
         // SMTP::DEBUG_CLIENT = client messages
         // SMTP::DEBUG_SERVER = client and server messages
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
 
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->SMTPAuth = true;
-        $mail->Username = $option->email;
+        $mail->Username = $option->emailkontak;
         $mail->Password = $option->passwordemail;
-        $mail->setFrom($fromemail, $from);
-        $mail->addAddress($option->emailkontak, 'Muchmomment');
-        $mail->Subject = '[Notification] Request Service of '.$from;
+        $mail->setFrom($option->emailkontak, 'Notification');
+        $mail->addAddress($option->email, 'Muchmomment');
+        $mail->Subject = '[Notification] Request Service of '.$data['name'];
+        $mail->isHTML(true);
         $mail->Body = $body;
 
         //send the message, check for errors
         if (!$mail->send()) {
-            echo 'Mailer Error: ' . $mail->ErrorInfo;
+            // echo 'Mailer Error: ' . $mail->ErrorInfo;
+            $msg =  $mail->ErrorInfo;
+            Session::flash('warning',$msg);
         } else {
-            echo 'Message sent! Soon your message will be reply';
+            $msg =  'Message sent! Soon your message will be reply';
+            Session::flash('success',$msg);
         }
+
+        return true;
     }
 
 }
