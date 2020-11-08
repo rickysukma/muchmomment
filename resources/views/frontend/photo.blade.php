@@ -4,6 +4,14 @@
 
 @section('content')
 
+<div class="overlay"></div>
+    <div class="container py-4 my-4">
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+</div>
+
 <div class="container" id="sldr">
     @php
     if(count($photos) > 0){
@@ -21,8 +29,8 @@
     echo "<center>No data</center>";
     }
     @endphp
-
-    <div class="container border-bottom mt-5 mx-auto" id="linessectionsubphoto">
+    <div class="container.">{{ $photos->links('pagination::custom-pagination') }}</div>
+    {{-- <div class="container border-bottom mt-5 mx-auto" id="linessectionsubphoto"> --}}
     </div>
 </div> 
 

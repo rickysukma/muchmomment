@@ -10,6 +10,7 @@ Auth::routes();
 
 Route::get('/test', 'HomeController@test');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/send-email', 'HomeController@send_email')->name('home.send-email');
 Route::get('/photo/{cat}/{slug?}', 'HomeController@photo')->name('photo');
 Route::get('/photo-of/{slug}', 'HomeController@photo_slug')->name('photo.slug');
 Route::get('/videos/{name}', 'HomeController@videos')->name('videos');
@@ -25,6 +26,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'auth'],function(){
   
   Route::get('/post/list-video', 'AdminController@videos')->name('admin.videos');
   Route::get('/post/list-photo', 'AdminController@photos')->name('admin.photos');
+  // album
+  Route::get('/post/album/{id}', 'AdminController@album')->name('admin.album');
+  Route::post('/post/album-upload/{id}', 'AdminController@album_upload')->name('admin.album-upload');
+  Route::post('/post/album-hapus', 'AdminController@album_hapus')->name('admin.album-hapus');
   //post
   Route::get('/post/create', 'AdminController@post_create')->name('admin.post/create');
   Route::get('/post/create-video', 'AdminController@post_create_video')->name('admin.post/create-video');

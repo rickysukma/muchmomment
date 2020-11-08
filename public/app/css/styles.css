@@ -2513,7 +2513,8 @@ body.author .blog-details-author {
 .pagination, .swiper-pagination {
   position: absolute;
   transition: all .3s ease;
-  align-items: center; }
+  align-items: center;
+ }
   .pagination .pagination-item, .pagination .swiper-pagination-bullet, .swiper-pagination .pagination-item, .swiper-pagination .swiper-pagination-bullet {
     display: inline-block;
     width: 15px;

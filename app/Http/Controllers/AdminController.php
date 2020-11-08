@@ -5,7 +5,8 @@ use App\Post;
 use App\Photo;
 use App\Category;
 use App\Tag;
-use App\Video;
+use App\Video; 
+use App\Album; 
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -75,7 +76,7 @@ class AdminController extends Controller
 
         $post = Photo::create([
           'title'=> $request->title,
-          'slug'=> str_slug($request->title),
+          'slug'=> str_slug($request->title).'-'.time(),
           'path' => $path. $image_new_name,
           'category' => $request->category,
           'parent' => ''
@@ -84,7 +85,7 @@ class AdminController extends Controller
       }else{
         $post = Photo::create([
           'title'=> $request->title,
-          'slug'=> str_slug($request->title),
+          'slug'=> str_slug($request->title).'-'.time(),
           'path' => $path. $image_new_name,
           'category' => $request->category,
           'parent' => ''
@@ -317,6 +318,57 @@ class AdminController extends Controller
     public function photos(){
       $photo = Photo::latest()->get();
       return view('admin.photos')->with('photo',$photo);
+    }
+
+    public function album($id){
+      $albums = Album::where('parent',$id)->get();
+      $header = Photo::where('id',$id)->first();
+      return view('admin.album')->with('albums',$albums)->with('header',$header);
+    }
+
+    public function album_upload (Request $request,$id){
+      // print_r($request->image);exit();
+
+      $this->validate($request,[
+        'image' => 'required|mimes:png,gif,jpeg,jpg,png|max:512'
+      ]);
+      
+      $cek = Album::where('parent',$id)->get();
+
+      if(count($cek) > 6){
+        Session::flash('warning','Image max of album are 6');
+        return back();
+      }
+
+      $image = $request->image;
+      $image_new_name = time().$image->getClientOriginalName();
+      $image->move('upload/detail-image/',$image_new_name);
+
+      $post = Album::create([
+        'parent'=> $id,
+        'path' => 'upload/detail-image/' . $image_new_name
+      ]);
+
+      if($post){
+        Session::flash('success','Image Successfully Uploaded!');
+        return back();
+      }
+
+    }
+
+    public function album_hapus(Request $request){
+      if(empty($request->id)){
+        \http_response_code(500);
+        echo json_encode(['message' => 'Image selected empty!']);
+      }
+
+      $data = Album::where('id',$request->id)->first();
+      if(file_exists($data->path)){
+        if(Album::where('id',$request->id)->delete()){
+          unlink($data->path);
+        }
+      }
+
     }
 
     public function setting(){

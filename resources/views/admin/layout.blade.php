@@ -80,6 +80,11 @@
                           <div class="sb-nav-link-icon"><i class="fa fa-cogs" aria-hidden="true"></i></div>
                             Setting
                         </a>
+
+                        <a class="nav-link" href="{{ route('admin.setting') }}">
+                          <div class="sb-nav-link-icon"><i class="fa fa-image" aria-hidden="true"></i></div>
+                            Banner
+                        </a>
                         {{-- <a class="nav-link" href="{{ route('admin.tag/create') }}">
                           <div class="sb-nav-link-icon"><i class="fa fa-hashtag" aria-hidden="true"></i></div>
                             Create Tag
@@ -138,6 +143,24 @@
   @if(Session::has('info'))
     toastr.info("{{ Session::get('info')}}")
   @endif
+
+  function hapus(id){
+    if(confirm('Yakin akan menghapus file ini?') === true){
+      $.ajax({
+        type: "post",
+        url: "{{ route('admin.album-hapus') }}",
+        data: {id : id, _token : "{{ csrf_token() }}"},
+        success: function (response) {
+          toastr.success('File was deleted', 'Success!');
+          location.reload();
+        }, error: function(data){
+          msg = JSON.parse(data.responseText);
+          toastr.warning(msg.message, 'Error!')
+        }
+      });
+    }
+  }
+
 </script>
 </body>
 </html>
