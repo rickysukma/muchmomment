@@ -4,6 +4,27 @@
 
 @section('content')
 
+@php
+    $arr = [];
+@endphp
+
+@foreach ($album as $item)
+  @php 
+    list($width, $height) = getimagesize($item->path);
+
+    if ( $width > $height ) {
+    // Landscape image
+    $arr['landscape'][] = $item;
+    }
+    elseif ( $width < $height ) {
+    // Portrait
+    $arr['potrait'][] = $item;
+    }
+    else {
+    }
+  @endphp
+@endforeach
+
 <div class="overlay"></div>
     <div class="container py-4 my-4">
     <div class="row">
@@ -14,8 +35,8 @@
 
 <!-- START DETAIL PHOTO ENGAGEMENT3 -->
 <div class="container" id="sldr">
-  <div class="d-flex justify-content-center">
-      @foreach ($album as $key => $item)
+  {{-- <div class="d-flex justify-content-center"> --}}
+      {{-- @foreach ($album as $key => $item)
       <div class="pphotodl1" id="padingsetfotokiri">
         <img src="{{ url('/'.$item->path) }}" class="img-fluid" alt="Responsive image">
       </div>
@@ -25,17 +46,36 @@
         <div class="d-flex justify-content-center">
       @endif
 
-    @endforeach
-  </div>
+    @endforeach --}}
+  {{-- </div> --}}
     <!-- portrait -->
-    {{-- <div class="d-flex justify-content-center">
+    @if (!empty($arr['landscape']))
+    @foreach ($arr['landscape'] as $land)
+    <div class="d-flex justify-content-center">
       <div class="pphotod1" id="padingsetfotokiri">
-        <img src="../images/engagement/e1/e11.jpg" class="img-fluid" alt="Responsive image">
+        <img src="{{ url('/'.$land->path) }}" class="img-fluid" alt="Responsive image">
       </div>   
-      <div class="pphotd1" id="padingsetfotokanan">
-        <img src="../images/engagement/e1/e14.jpg" class="img-fluid" alt="Responsive image">
-      </div>   
-    </div> --}}
+    </div>
+    @endforeach
+    @endif
+
+    @if (!empty($arr['potrait']))
+    <div class="d-flex justify-content-center">
+      @foreach ($arr['potrait'] as $key => $item)
+      <div class="pphotodl1" id="padingsetfotokiri">
+        <img src="{{ url('/'.$item->path) }}" class="img-fluid" alt="Responsive image">
+      </div>
+
+      @if ($key % 2 != 0)
+        </div>
+        <div class="d-flex justify-content-center">
+      @endif
+      @if($key == count($arr['potrait'])-1)
+        </div>
+      @endif
+      @endforeach
+    @endif
+    
 
     <!-- landscape -->  
     {{-- <div class="pphotodl1">

@@ -81,7 +81,7 @@
                             Setting
                         </a>
 
-                        <a class="nav-link" href="{{ route('admin.setting') }}">
+                        <a class="nav-link" href="{{ route('admin.banner') }}">
                           <div class="sb-nav-link-icon"><i class="fa fa-image" aria-hidden="true"></i></div>
                             Banner
                         </a>
@@ -142,6 +142,12 @@
   @endif
   @if(Session::has('info'))
     toastr.info("{{ Session::get('info')}}")
+  @endif
+  @if(Session::has('warning'))
+    toastr.warning("{{ Session::get('warning')}}")
+  @endif
+  @if(Session::has('danger'))
+    toastr.error("{{ Session::get('danger')}}")
   @endif
 
   function hapus(id){

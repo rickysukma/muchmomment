@@ -8,6 +8,7 @@ use App\Tag;
 use App\Video; 
 use App\Album; 
 use App\Option; 
+use App\Banner; 
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -328,8 +329,6 @@ class AdminController extends Controller
     }
 
     public function album_upload (Request $request,$id){
-      // print_r($request->image);exit();
-
       $this->validate($request,[
         'image' => 'required|mimes:png,gif,jpeg,jpg,png|max:512'
       ]);
@@ -337,7 +336,7 @@ class AdminController extends Controller
       $cek = Album::where('parent',$id)->get();
 
       if(count($cek) > 6){
-        Session::flash('warning','Image max of album are 6');
+        Session::flash('danger','Image max of album are 6');
         return back();
       }
 
@@ -373,16 +372,35 @@ class AdminController extends Controller
     }
 
     public function setting(){
-    //   $option = array(
-    //     'wa' => env('OPTION_WA'),
-    //     'ig' => env('OPTION_INSTAGRAM'),
-    //     'telp' => env('OPTION_TELP'),
-    //     'email' => env('OPTION_EMAIL'),
-    // );
 
     $option = Option::findOrfail(1)->first();
-      // exit(print_r($option->email));
       return view('admin.setting')->with('option',$option);
+    }
+
+    public function banner(){
+      $albums = Banner::all();
+      // print_r($albums);
+      return view('admin.banner')->with('albums',$albums);
+    }
+
+    public function banner_upload (Request $request){
+      $this->validate($request,[
+        'image' => 'required|mimes:png,gif,jpeg,jpg,png|max:1024'
+      ]);
+
+      $image = $request->image;
+      $image_new_name = time().$image->getClientOriginalName();
+      $image->move('upload/banner/',$image_new_name);
+
+      $post = Banner::create([
+        'image' => 'upload/banner/' . $image_new_name
+      ]);
+
+      if($post){
+        Session::flash('success','Image Successfully Uploaded!');
+        return back();
+      }
+
     }
 
     public function setting_save(Request $request){

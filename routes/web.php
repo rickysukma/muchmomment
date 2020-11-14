@@ -21,6 +21,9 @@ Route::get('/contact', 'HomeController@contact')->name('contact');
 Route::group(['prefix'=>'admin', 'middleware'=>'auth'],function(){
   Route::get('/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
   
+  Route::get('/banner', 'AdminController@banner')->name('admin.banner');
+  Route::post('/banner-upload', 'AdminController@banner_upload')->name('admin.banner-upload');
+  
   Route::get('/setting', 'AdminController@setting')->name('admin.setting');
   Route::post('/setting-save', 'AdminController@setting_save')->name('admin.setting-save');
   

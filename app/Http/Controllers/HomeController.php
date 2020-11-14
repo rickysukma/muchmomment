@@ -29,7 +29,8 @@ class HomeController extends Controller
 
     public function test()
     {
-        return view('frontend.home');
+        $banner = Banner::all();
+        return view('frontend.home')->with('banners',$banner);
         // return view('frontend/layout');
     }
 
@@ -47,7 +48,7 @@ class HomeController extends Controller
         }elseif(!empty($cat) && $slug == null){
             $photo = DB::table('photos')
                     ->join('categories','categories.id','=','photos.category')
-                    ->where('categories.name',ucfirst($cat))->paginate(3)->onEachSide(3);
+                    ->where('categories.name',ucfirst($cat))->paginate(1)->onEachSide(2);
         }
         return view('frontend.photo')->with('photos',$photo);
     }
@@ -133,7 +134,7 @@ class HomeController extends Controller
         $mail->SMTPAuth = true;
         $mail->Username = $option->emailkontak;
         $mail->Password = $option->passwordemail;
-        $mail->setFrom($option->emailkontak, 'Notification');
+        $mail->setFrom($option->emailkontak, 'Notification [MuchMoments]');
         $mail->addAddress($option->email, 'Muchmomment');
         $mail->Subject = '[Notification] Request Service of '.$data['name'];
         $mail->isHTML(true);

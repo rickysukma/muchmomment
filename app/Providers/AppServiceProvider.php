@@ -7,6 +7,7 @@ use App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Category;
+use App\Option;
 // use Illuminate\Http\Request; 
 
 class AppServiceProvider extends ServiceProvider
@@ -28,13 +29,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        
         View::composer('frontend.layout',function($view){
+            $opt = Option::findOrfail(1)->first();
             $option = array(
-                'wa' => env('OPTION_WA'),
-                'ig' => env('OPTION_INSTAGRAM'),
-                'telp' => env('OPTION_TELP'),
-                'email' => env('OPTION_EMAIL'),
+                'wa' => $opt->whatsapp,
+                'ig' => $opt->instagram,
+                'telp' => $opt->telepon,
+                'email' => $opt->email,
             );
 
             $view->with('categories', Category::latest()->get())->with('option',$option);

@@ -43,7 +43,7 @@
       <!-- Start Navbar Brand-->     
       <!-- <div class="container mx-auto fixed-top" style="width: 200px;"> -->
       <div class="container mx-auto" style="width: 200px;">
-        <img src="{{ asset('frontend/images/muchmomentlogo.png') }}" class="brand" alt="..." id=logo>
+        <a href="{{url('/')}}"><img src="{{ asset('frontend/images/muchmomentlogo.png') }}" class="brand" alt="..." id=logo></a>
       </div>
       <!-- End Navbar Brand-->  
 
@@ -71,12 +71,12 @@
               <!-- <li class="nav-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
               </li> -->
               
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link" href="/" tabindex="-1" >Home</a>
-              </li>
+              </li> --}}
 
               <!-- Start Dropdown Photography Menu-->
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown {{ request()->is('photo/*') ? 'active' : '' }}">
                 <a class="nav-link dropdown-toggle" href="#Photography" id="navbarDropdown"
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Photography
@@ -92,12 +92,12 @@
             <!-- End Dropdown Photography Menu-->
             
             <!-- Start Dropdown Videography Menu-->
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown {{ request()->is('videos/*') ? 'active' : '' }}">
               <a class="nav-link dropdown-toggle" href="#Videography" id="navbarDropdown"
               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Videography
             </a>
-            <div class="dropdown-menu active" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 @foreach($categories as $category)
 
                 @php $str = strtolower($category->name) @endphp
@@ -107,10 +107,10 @@
           </li>
           <!-- End Dropdown Videography Menu-->
           
-          <li class="nav-item">
+          <li class="nav-item {{ request()->is('about') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('about') }}" tabindex="-1" >About</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {{ request()->is('contact') ? 'active' : '' }}">
             <a class="nav-link" href="{{  route('contact') }}" tabindex="-1" >Contact Us</a>
           </li>
           </ul>
@@ -135,8 +135,11 @@
       <div class="overlay"></div>
     <!-- END NAVBAR-->
     @yield('content')
+    @if (!request()->is('photo/*') && !request()->is('videos/*') && !!request()->is('photo-of'))
     <br><br>
-    </div>
+    <div class="container border-bottom m-5 mx-auto" id="linessection"></div>    
+    @endif
+    
     <!-- START FOOTER -->
     <!-- <div class="d-flex align-content-start flex-wrap justify-content-center">
       <i class="fa-1x fab fa-whatsapp text-grey ml-2"></i>
@@ -160,7 +163,6 @@
         <i class="fa-1x far fa-envelope text-grey ml-2"></i>
         <a href="mailto:{{ $option['email'] }}?subject = Feedback&body = Message" id="captionfooter">{{ $option['email'] }}</a>
       </div>
-      <br><br>
     </div>
   </div>
     <!-- <div class="container mx-auto">

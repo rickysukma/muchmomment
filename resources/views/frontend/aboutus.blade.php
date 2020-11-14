@@ -4,6 +4,15 @@
 @section('title','About Us')
 
 @section('content')
+
+<div class="overlay"></div>
+    <div class="container py-4 my-4">
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+</div>
+
  <div class="container" id="sldr">
     <h2 class="titleabout" id="titleaboutteks">About Us</h2>
     <h6 class="textabout" id="aboutteks">We are wedding photographer based in jakarta. Muchmoments specializes in the use of medium format cameras, in natural light, and incredible landscapes. We have been in business since 2017 and shoot many weddings per year. Whether you are looking for an entertaining Highlights Photo and Video, a full Documentary or a breathtaking Cinematic Wedding Day Highlight Photo and Video, we have the passion.
@@ -14,7 +23,7 @@
     <!-- portrait -->
     <div class="d-flex justify-content-center">
     <div class="pphotod1" id="padingsetfotokiri">
-        <a href="haldetail/preweddingpd1.php"><img src="{{ asset('frontend/images/wedding/w2/w21.jpg') }}" class="img-fluid" alt="Responsive image"></a>
+        <img src="{{ asset('frontend/images/wedding/w2/w21.jpg') }}" class="img-fluid" alt="Responsive image">
         <!-- <h5 class="text-center">Prewedding of T & E</h5>  -->
     </div>   
     <div class="pphotd1" id="padingsetfotokanan">
