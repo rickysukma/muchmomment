@@ -184,7 +184,7 @@ class AdminController extends Controller
       }
 
       Session::flash('success','Post has been updated!');
-      return redirect()->route('admin.post-edit',['id' => $post->id]);
+      return redirect()->route('admin.post/edit-photo',['id' => $post->id]);
     }
 
     public function post_update_video(Request $request, $id)
@@ -235,10 +235,17 @@ class AdminController extends Controller
     // Post Force Delete
     public function post_forcedelete($id)
     {
-      $post = Post::withTrashed()->where('id',$id)->first();
-      $post->forcedelete();
+      $data = Photo::where('id',$id)->first();
+      // print_r($data);exit();
+      if(\file_exists('upload/post/'.$data->slug)){
+        unlink('upload/post/'.$data->slug);
+        \unlink($data->path);
+        // Album::withTrashed()->where('parent',$data->id)->first()->forceDelete();
+        // $post->forcedelete();
+      }
+      $post = Photo::where('id',$id)->delete();
       Session::flash('success','Post has deleted!');
-
+      
       return back();
     }
 

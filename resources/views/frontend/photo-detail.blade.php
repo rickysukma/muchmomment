@@ -15,15 +15,25 @@
     if ( $width > $height ) {
     // Landscape image
     $arr['landscape'][] = $item;
+
     }
     elseif ( $width < $height ) {
     // Portrait
+    if(count($arr['potrait'] >= 2)){
+      $arr['nextpotrait'][] = $item;
+      continue;
+    }
     $arr['potrait'][] = $item;
     }
     else {
     }
   @endphp
 @endforeach
+@php
+    
+print_r($arr)
+
+@endphp
 
 <div class="overlay"></div>
     <div class="container py-4 my-4">
@@ -49,56 +59,100 @@
     @endforeach --}}
   {{-- </div> --}}
     <!-- portrait -->
-    @if (!empty($arr['landscape']))
-    @foreach ($arr['landscape'] as $land)
-    <div class="d-flex justify-content-center">
-      <div class="pphotod1" id="padingsetfotokiri">
-        <img src="{{ url('/'.$land->path) }}" class="img-fluid" alt="Responsive image">
-      </div>   
-    </div>
-    @endforeach
-    @endif
-
     @if (!empty($arr['potrait']))
     <div class="d-flex justify-content-center">
+      @php
+          $genap = true;
+      @endphp
+      
       @foreach ($arr['potrait'] as $key => $item)
-      <div class="pphotodl1" id="padingsetfotokiri">
+      @if ($key % 2 != 0)
+          @php
+              $genap = false;
+              $padding = 'padingsetfotokanan';
+          @endphp
+      @else
+          @php
+              $genap = true;
+              $padding = 'padingsetfotokiri';
+          @endphp
+      @endif
+      
+      <div class="pphotodl1" id="{{$padding}}">
         <img src="{{ url('/'.$item->path) }}" class="img-fluid" alt="Responsive image">
       </div>
 
-      @if ($key % 2 != 0)
+      @if (!$genap)
         </div>
         <div class="d-flex justify-content-center">
       @endif
+
       @if($key == count($arr['potrait'])-1)
         </div>
       @endif
+
       @endforeach
     @endif
     
+    {{-- landscapr --}}
+    @if (!empty($arr['landscape']))
+    @foreach ($arr['landscape'] as $i => $land)
 
-    <!-- landscape -->  
-    {{-- <div class="pphotodl1">
-      <img src="../images/engagement/e1/e13.jpg" class="img-fluid" alt="Responsive image">
-    </div> --}}
+      @if ($i == 1)
+          <div class="d-flex justify-content-center">
+            <div class="pphotod1" id="padingsetfotokiri">
+              <img src="{{ url('/'.$land->path) }}" class="img-fluid" alt="Responsive image">
+            </div>   
+      @elseif($i == 2)
+            <div class="pphotd1" id="padingsetfotokanan">
+              <img src="{{ url('/'.$land->path) }}" class="img-fluid" alt="Responsive image">
+            </div>   
+          </div>
+      @else
+      
+      @if (!empty($arr['nextpotrait']))
+        <div class="d-flex justify-content-center">
+      @php
+          $genap = true;
+      @endphp
+      
+      @foreach ($arr['nextpotrait'] as $key => $item)
+      @if ($key % 2 != 0)
+          @php
+              $genap = false;
+              $padding = 'padingsetfotokanan';
+          @endphp
+      @else
+          @php
+              $genap = true;
+              $padding = 'padingsetfotokiri';
+          @endphp
+      @endif
+      
+      <div class="pphotodl1" id="{{$padding}}">
+        <img src="{{ url('/'.$item->path) }}" class="img-fluid" alt="Responsive image">
+      </div>
 
-    <!-- portrait -->
-    {{-- <div class="d-flex justify-content-center">
-      <div class="pphotod1" id="padingsetfotokiri">
-        <img src="../images/engagement/e1/e14.jpg" class="img-fluid" alt="Responsive image">
-      </div>   
-      <div class="pphotd1" id="padingsetfotokanan">
-        <img src="../images/engagement/e1/e16.jpg" class="img-fluid" alt="Responsive image">
-      </div>   
-    </div> --}}
+      @if (!$genap)
+        </div>
+        <div class="d-flex justify-content-center">
+      @endif
 
-    <!-- landscape -->
-    {{-- <div class="pphotodl1">
-      <img src="../images/engagement/e1/e15.jpg" class="img-fluid" alt="Responsive image">
-    </div> 
-    <div class="pphotodl1">
-      <img src="../images/engagement/e1/e14.jpg" class="img-fluid" alt="Responsive image">
-    </div>      --}}
+      @if($key == count($arr['nextpotrait'])-1)
+        </div>
+      @endif
+      
+      @endforeach
+    @endif
+
+
+        <div class="pphotodl1">
+          <img src="{{ url('/'.$land->path) }}" class="img-fluid" alt="Responsive image">
+        </div>
+      @endif
+    @endforeach
+    @endif
+
     <h5 class="text-center">{{ $header->title }}</h5> 
     <div class="container border-bottom mt-5 mx-auto" id="linessectionsubphotodetail">
     </div>

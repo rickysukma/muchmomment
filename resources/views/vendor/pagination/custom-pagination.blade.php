@@ -23,7 +23,7 @@
     <ul class="pagination justify-content-center">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
-            <li class="disabled page-item"><span>«</span></li>
+            <li class="disabled page-item"><a href="#" class="page-link">«</a></li>
         @else
             <li class="page-item"><a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">«</a></li>
         @endif
@@ -54,7 +54,7 @@
         @if ($paginator->hasMorePages())
             <li class="page-item"><a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">»</a></li>
         @else
-            <li class="disabled"><span>»</span></li>
+            <li class="disabled page-item"><a href="#" class="page-link">»</a></li>
         @endif
     </ul>
     </nav>

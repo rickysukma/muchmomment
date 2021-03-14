@@ -28,7 +28,7 @@
                               <td>{{ $pot->category }}</td>
                               <td class="md-0"><a href="{{ route('admin.album',['id' => $pot->id]) }}"><i class="fas fa-image"></i></a></td>
                               <td class="md-0"><a href="{{ route('admin.post/edit-photo',['id' => $pot->id]) }}"><i class="fas fa-pencil-alt"></i></a></td>
-                              <td class=""><a href="{{ route('admin.category/delete',['id' => $pot->id]) }}"><i class="far fa-trash-alt"></i></a> </td>
+                              <td class=""><a href="{{ route('admin.post/forcedelete',['id' => $pot->id]) }}"><i class="far fa-trash-alt"></i></a> </td>
                           </tr>
                         @endforeach
                     </tbody>
